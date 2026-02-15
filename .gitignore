@@ -1,0 +1,17 @@
+node_modules/
+build/
+*.node
+*.log
+demo_sample.csv
+demo_minimal.csv
+bench/data/
+bench/reports/
+test/tmp_*/
+test/pipeline_fixture.csv
+test/fixture.xlsx
+.DS_Store
+*.swp
+*.swo
+.env
+.env.*
+!.env.example

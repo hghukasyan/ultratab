@@ -1,0 +1,19 @@
+# Development / CI
+.github/
+test/
+bench/
+*.test.js
+demo*.js
+demo_*.js
+
+# Build artifacts (created during npm install)
+build/
+
+# Local / temp
+*.log
+.DS_Store
+demo_sample.csv
+demo_minimal.csv
+test/
+bench/data/
+bench/reports/

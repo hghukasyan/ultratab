@@ -1,0 +1,71 @@
+{
+  "name": "ultratab",
+  "version": "1.0.0",
+  "description": "Ultra-fast native CSV and XLSX streaming parser for Node.js",
+  "main": "index.js",
+  "types": "ultratab.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "csv",
+    "xlsx",
+    "parser",
+    "native",
+    "stream",
+    "data",
+    "etl",
+    "fast"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "ultratab.d.ts",
+    "src/",
+    "vendor/",
+    "CMakeLists.txt",
+    "examples/",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "cmake-js compile",
+    "rebuild": "cmake-js rebuild",
+    "clean": "cmake-js clean",
+    "install": "cmake-js compile",
+    "prepublishOnly": "npm run build",
+    "test": "node test/create_fixture_xlsx.js && node test/typed_conversions.test.js && node test/papaparse_parity.test.js && node test/pipeline.test.js && node test/fuzz_csv.test.js && node test/arena_memory.test.js && node test/xlsx_streaming.test.js",
+    "fixture:xlsx": "node test/create_fixture_xlsx.js"
+  },
+  "binary": {
+    "napi_versions": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "dependencies": {
+    "node-addon-api": "^7.0.0",
+    "cmake-js": "^7.2.1"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5",
+    "papaparse": "^5.4.1",
+    "csv-parse": "^5.5.6",
+    "@fast-csv/parse": "^5.0.1",
+    "exceljs": "^4.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haykghukasyan/ultratab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/haykghukasyan/ultratab/issues"
+  },
+  "homepage": "https://github.com/haykghukasyan/ultratab#readme"
+}
