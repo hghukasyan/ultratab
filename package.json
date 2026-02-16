@@ -31,12 +31,13 @@
     "package.json"
   ],
   "scripts": {
-    "build": "cmake-js compile",
+    "build": "npm run build:ts && cmake-js compile",
+    "build:ts": "tsc",
     "rebuild": "cmake-js rebuild",
     "clean": "cmake-js clean",
-    "install": "cmake-js compile",
+    "install": "npm run build:ts && cmake-js compile",
     "prepublishOnly": "npm run build",
-    "test": "node test/create_fixture_xlsx.js && node test/typed_conversions.test.js && node test/papaparse_parity.test.js && node test/pipeline.test.js && node test/fuzz_csv.test.js && node test/arena_memory.test.js && node test/xlsx_streaming.test.js",
+    "test": "npm run build:ts && node test/create_fixture_xlsx.js && node test/typed_conversions.test.js && node test/papaparse_parity.test.js && node test/pipeline.test.js && node test/fuzz_csv.test.js && node test/arena_memory.test.js && node test/xlsx_streaming.test.js",
     "fixture:xlsx": "node test/create_fixture_xlsx.js"
   },
   "binary": {
@@ -54,6 +55,7 @@
     "cmake-js": "^7.2.1"
   },
   "devDependencies": {
+    "typescript": "^5.3.0",
     "xlsx": "^0.18.5",
     "papaparse": "^5.4.1",
     "csv-parse": "^5.5.6",
@@ -62,7 +64,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/haykghukasyan/ultratab.git"
+    "url": "git+https://github.com/haykghukasyan/ultratab.git"
   },
   "bugs": {
     "url": "https://github.com/haykghukasyan/ultratab/issues"

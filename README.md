@@ -23,6 +23,8 @@ npm install ultratab
 
 **Requirements:** Node.js >= 18, CMake >= 3.15, C++17 compiler (GCC, Clang, or MSVC)
 
+UltraTab is written in TypeScript and ships with full type definitions. Use `import` (ESM) or `require()` (CommonJS).
+
 ## Quick Start
 
 After `npm install ultratab`, try the example:
@@ -33,8 +35,8 @@ node node_modules/ultratab/examples/csv-demo.js
 
 ### CSV (row-based)
 
-```javascript
-const { csv } = require("ultratab");
+```typescript
+import { csv } from "ultratab";
 
 for await (const batch of csv("data.csv", { batchSize: 10000, headers: true })) {
   console.log("Rows in batch:", batch.length);
@@ -46,8 +48,8 @@ for await (const batch of csv("data.csv", { batchSize: 10000, headers: true })) 
 
 ### CSV (typed columnar)
 
-```javascript
-const { csvColumns } = require("ultratab");
+```typescript
+import { csvColumns } from "ultratab";
 
 for await (const batch of csvColumns("data.csv", {
   headers: true,
@@ -66,8 +68,8 @@ for await (const batch of csvColumns("data.csv", {
 
 ### XLSX
 
-```javascript
-const { xlsx } = require("ultratab");
+```typescript
+import { xlsx } from "ultratab";
 
 for await (const batch of xlsx("data.xlsx", {
   sheet: 1,
