@@ -85,7 +85,7 @@ for await (const batch of xlsx("data.xlsx", {
 
 ### `csv(path, options?)`
 
-Returns `AsyncIterable<string[][]>`. Each batch is an array of rows; each row is `string[]`.
+Returns `AsyncIterable&lt;string[][]&gt;`. Each batch is an array of rows; each row is `string[]`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -99,7 +99,7 @@ Returns `AsyncIterable<string[][]>`. Each batch is an array of rows; each row is
 
 ### `csvColumns(path, options?)`
 
-Returns `AsyncIterable<ColumnarBatch>`. Each batch has `headers`, `columns`, `nullMask`, and `rows`.
+Returns `AsyncIterable&lt;ColumnarBatch&gt;`. Each batch has `headers`, `columns`, `nullMask`, and `rows`.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -115,7 +115,7 @@ Returns `AsyncIterable<ColumnarBatch>`. Each batch has `headers`, `columns`, `nu
 
 ### `xlsx(path, options?)`
 
-Returns `AsyncIterable<XlsxBatchResult>`. Options: `sheet`, `headers`, `batchSize`, `select`, `schema`, `nullValues`, `trim`, `typedFallback`.
+Returns `AsyncIterable&lt;XlsxBatchResult&gt;`. Options: `sheet`, `headers`, `batchSize`, `select`, `schema`, `nullValues`, `trim`, `typedFallback`.
 
 ## Performance
 
@@ -130,7 +130,7 @@ Designed for large files: minimal allocations, SIMD-accelerated scanning (x86_64
 ## Build from Source
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/haykghukasyan/ultratab.git
 cd ultratab
 npm install
 npm run build
