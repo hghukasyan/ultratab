@@ -1,19 +1,43 @@
 {
   "name": "ultratab",
   "version": "1.0.0",
-  "description": "Ultra-fast native CSV and XLSX streaming parser for Node.js",
+  "description": "Ultra-fast streaming CSV and XLSX parser for Node.js with native C++ backend, non-blocking threads, and low memory usage for huge files",
   "main": "index.js",
   "types": "ultratab.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "types": "./ultratab.d.ts"
+    }
+  },
   "license": "MIT",
+  "author": "Hayk Ghukasyan",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/hghukasyan"
+  },
   "keywords": [
     "csv",
     "xlsx",
-    "parser",
-    "native",
-    "stream",
-    "data",
+    "csv-parser",
+    "xlsx-parser",
+    "streaming",
+    "big-data",
+    "large-files",
     "etl",
-    "fast"
+    "data-processing",
+    "data-engineering",
+    "non-blocking",
+    "high-performance",
+    "native-addon",
+    "napi",
+    "c++",
+    "nodejs",
+    "fast-csv",
+    "excel-parser",
+    "machine-learning",
+    "analytics",
+    "log-processing"
   ],
   "engines": {
     "node": ">=18"
@@ -22,13 +46,8 @@
     "index.js",
     "lib/",
     "ultratab.d.ts",
-    "src/",
-    "vendor/",
-    "CMakeLists.txt",
-    "examples/",
     "README.md",
-    "LICENSE",
-    "package.json"
+    "LICENSE"
   ],
   "scripts": {
     "build": "npm run build:ts && cmake-js compile",
@@ -37,18 +56,10 @@
     "clean": "cmake-js clean",
     "install": "npm run build:ts && cmake-js compile",
     "prepublishOnly": "npm run build",
-    "test": "npm run build:ts && node test/create_fixture_xlsx.js && node test/typed_conversions.test.js && node test/papaparse_parity.test.js && node test/pipeline.test.js && node test/fuzz_csv.test.js && node test/arena_memory.test.js && node test/xlsx_streaming.test.js",
-    "fixture:xlsx": "node test/create_fixture_xlsx.js"
+    "test": "npm run build:ts && node test/create_fixture_xlsx.js && node test/typed_conversions.test.js && node test/papaparse_parity.test.js && node test/pipeline.test.js && node test/fuzz_csv.test.js && node test/arena_memory.test.js && node test/xlsx_streaming.test.js"
   },
   "binary": {
-    "napi_versions": [
-      3,
-      4,
-      5,
-      6,
-      7,
-      8
-    ]
+    "napi_versions": [3, 4, 5, 6, 7, 8]
   },
   "dependencies": {
     "node-addon-api": "^7.0.0",
