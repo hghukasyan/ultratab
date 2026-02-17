@@ -47,7 +47,14 @@
     "lib/",
     "ultratab.d.ts",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CMakeLists.txt",
+    "tsconfig.json",
+    "src/*.cc",
+    "src/*.h",
+    "src/index.ts",
+    "src/lib/",
+    "vendor/"
   ],
   "scripts": {
     "build": "npm run build:ts && cmake-js compile",
