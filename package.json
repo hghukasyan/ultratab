@@ -1,6 +1,6 @@
 {
   "name": "ultratab",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Ultra-fast streaming CSV and XLSX parser for Node.js with native C++ backend, non-blocking threads, and low memory usage for huge files",
   "main": "index.js",
   "types": "ultratab.d.ts",
@@ -72,6 +72,9 @@
     "csv-parse": "^5.5.6",
     "@fast-csv/parse": "^5.0.1",
     "exceljs": "^4.4.0"
+  },
+  "overrides": {
+    "tar": "^7.5.7"
   },
   "repository": {
     "type": "git",
