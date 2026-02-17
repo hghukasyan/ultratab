@@ -1,21 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
- * Creates test/fixture.xlsx using the xlsx package (SheetJS).
+ * Creates test/fixture.xlsx using ExcelJS.
  * Run: node test/create_fixture_xlsx.js
  * Then run: node test/xlsx_streaming.test.js
  */
-const XLSX = require("xlsx");
 const path = require("path");
-const fs = require("fs");
+const ExcelJS = require("exceljs");
 const outPath = path.join(__dirname, "fixture.xlsx");
 const data = [
     ["Name", "Value"],
     ["Hello", 1],
     ["World", 2],
 ];
-const ws = XLSX.utils.aoa_to_sheet(data);
-const wb = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-XLSX.writeFile(wb, outPath);
-console.log("Wrote", outPath);
+async function main() {
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet("Sheet1");
+    ws.addRows(data);
+    await wb.xlsx.writeFile(outPath);
+    console.log("Wrote", outPath);
+}
+main()
+    .then(() => process.exit(0))
+    .catch((err) => {
+    console.error(err);
+    process.exit(1);
+});

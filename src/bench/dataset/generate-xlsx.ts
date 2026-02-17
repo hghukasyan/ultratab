@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const XLSX = require("xlsx");
+const ExcelJS = require("exceljs");
 const config = require("../config");
 
 function ensureDataDir(): void {
@@ -27,7 +27,11 @@ interface GenerateResult {
   rows: number;
 }
 
-function generateXlsx(filePath: string, targetRows: number, options: GenerateOptions = {}): GenerateResult {
+async function generateXlsx(
+  filePath: string,
+  targetRows: number,
+  options: GenerateOptions = {}
+): Promise<GenerateResult> {
   ensureDataDir();
   const cols = options.cols || 10;
   const header = Array.from({ length: cols }, (_, i) => `Col${i}`);
@@ -41,15 +45,15 @@ function generateXlsx(filePath: string, targetRows: number, options: GenerateOpt
     });
     data.push(row);
   }
-  const ws = XLSX.utils.aoa_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-  XLSX.writeFile(wb, filePath);
+  const wb = new ExcelJS.Workbook();
+  const ws = wb.addWorksheet("Sheet1");
+  ws.addRows(data);
+  await wb.xlsx.writeFile(filePath);
   const stat = fs.statSync(filePath);
   return { path: filePath, bytes: stat.size, rows: targetRows };
 }
 
-function generateAllXlsx(): Record<string, { path: string; bytes: number; rows: number }> {
+async function generateAllXlsx(): Promise<Record<string, { path: string; bytes: number; rows: number }>> {
   const sizes = config.getActiveSizes();
   const results: Record<string, { path: string; bytes: number; rows: number }> = {};
   const rowTargets: Record<string, number> = {
@@ -63,7 +67,7 @@ function generateAllXlsx(): Record<string, { path: string; bytes: number; rows: 
     const name = `xlsx_${sizeName}.xlsx`;
     const filePath = path.join(config.DATA_DIR, name);
     console.log(`Generating ${name} (~${targetRows} rows)...`);
-    const result = generateXlsx(filePath, targetRows);
+    const result = await generateXlsx(filePath, targetRows);
     results[sizeName] = { path: result.path, bytes: result.bytes, rows: result.rows };
     console.log(`  -> ${(result.bytes / 1024 / 1024).toFixed(2)} MB, ${result.rows} rows`);
   }
@@ -71,7 +75,12 @@ function generateAllXlsx(): Record<string, { path: string; bytes: number; rows: 
 }
 
 if (require.main === module) {
-  generateAllXlsx();
+  generateAllXlsx()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
 }
 
 module.exports = { generateXlsx, generateAllXlsx, ensureDataDir, XLSX_ROW_TARGETS };

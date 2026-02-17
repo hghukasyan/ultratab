@@ -287,6 +287,7 @@ static Value ColumnarBatchToValue(Env env, const ColumnarBatch& batch) {
 }
 
 static void ParseColumnarOptions(Env env, Object options, ColumnarOptions& opts) {
+  (void)env;
   if (options.Has("delimiter")) {
     Value d = options.Get("delimiter");
     if (d.IsString()) {
@@ -590,6 +591,7 @@ static Value XlsxBatchToValue(Env env, const XlsxBatch& batch) {
 }
 
 static void ParseXlsxOptions(Env env, Object options, XlsxOptions& opts) {
+  (void)env;
   if (options.Has("sheet")) {
     Value s = options.Get("sheet");
     if (s.IsNumber()) {

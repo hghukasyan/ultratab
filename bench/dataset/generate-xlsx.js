@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const path = require("path");
-const XLSX = require("xlsx");
+const ExcelJS = require("exceljs");
 const config = require("../config");
 function ensureDataDir() {
     if (!fs.existsSync(config.DATA_DIR)) {
@@ -14,7 +14,7 @@ const XLSX_ROW_TARGETS = {
     medium: 500000,
     large: 5000000,
 };
-function generateXlsx(filePath, targetRows, options = {}) {
+async function generateXlsx(filePath, targetRows, options = {}) {
     ensureDataDir();
     const cols = options.cols || 10;
     const header = Array.from({ length: cols }, (_, i) => `Col${i}`);
@@ -31,14 +31,14 @@ function generateXlsx(filePath, targetRows, options = {}) {
         });
         data.push(row);
     }
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, filePath);
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet("Sheet1");
+    ws.addRows(data);
+    await wb.xlsx.writeFile(filePath);
     const stat = fs.statSync(filePath);
     return { path: filePath, bytes: stat.size, rows: targetRows };
 }
-function generateAllXlsx() {
+async function generateAllXlsx() {
     const sizes = config.getActiveSizes();
     const results = {};
     const rowTargets = {
@@ -53,13 +53,18 @@ function generateAllXlsx() {
         const name = `xlsx_${sizeName}.xlsx`;
         const filePath = path.join(config.DATA_DIR, name);
         console.log(`Generating ${name} (~${targetRows} rows)...`);
-        const result = generateXlsx(filePath, targetRows);
+        const result = await generateXlsx(filePath, targetRows);
         results[sizeName] = { path: result.path, bytes: result.bytes, rows: result.rows };
         console.log(`  -> ${(result.bytes / 1024 / 1024).toFixed(2)} MB, ${result.rows} rows`);
     }
     return results;
 }
 if (require.main === module) {
-    generateAllXlsx();
+    generateAllXlsx()
+        .then(() => process.exit(0))
+        .catch((err) => {
+        console.error(err);
+        process.exit(1);
+    });
 }
 module.exports = { generateXlsx, generateAllXlsx, ensureDataDir, XLSX_ROW_TARGETS };

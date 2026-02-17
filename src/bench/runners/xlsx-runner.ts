@@ -2,26 +2,11 @@
 
 const fs = require("fs");
 const path = require("path");
-const XLSX = require("xlsx");
 const { xlsx: ultratabXlsx } = require("../../index.js");
 const { runBenchmark } = require("../lib/run-bench");
 const config = require("../config");
 
 const BATCH_SIZE = config.DEFAULT_BATCH_SIZE;
-
-async function runSheetJS(filePath: string, fileSize: number): Promise<Record<string, unknown>> {
-  return runBenchmark(
-    "xlsx (SheetJS)",
-    async () => {
-      const wb = XLSX.readFile(filePath);
-      const sheet = wb.Sheets[wb.SheetNames[0]];
-      const range = XLSX.utils.decode_range(sheet["!ref"] || "A1");
-      const rowCount = Math.max(0, range.e.r - range.s.r);
-      return { rowCount, bytesProcessed: fileSize };
-    },
-    { streaming: false }
-  );
-}
 
 async function runExcelJS(filePath: string, fileSize: number): Promise<Record<string, unknown>> {
   let ExcelJS: typeof import("exceljs");
@@ -71,7 +56,6 @@ async function runUltratabXlsx(filePath: string, fileSize: number): Promise<Reco
 async function runAllXlsxParsers(filePath: string, fileSize: number): Promise<Record<string, unknown>[]> {
   const results: Record<string, unknown>[] = [];
   const runners = [
-    () => runSheetJS(filePath, fileSize),
     () => runExcelJS(filePath, fileSize),
     () => runUltratabXlsx(filePath, fileSize),
   ];
@@ -113,7 +97,6 @@ async function runXlsxBenchForDataset(sizeName: string, dataDir: string): Promis
 }
 
 module.exports = {
-  runSheetJS,
   runExcelJS,
   runUltratabXlsx,
   runAllXlsxParsers,
